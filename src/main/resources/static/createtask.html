@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Task</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+<header>
+    <h1>Create Task</h1>
+</header>
+<nav>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="tasklist.html">Task List</a></li>
+        <li><a href="createtask.html">Create Task</a></li>
+    </ul>
+</nav>
+<main>
+    <form id="todotaskform" action="/tasks"method="post">
+        <div>
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+        <div>
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" required></textarea>
+        </div>
+        <div>
+            <label for="eta">ETA:</label>
+            <input type="date" id="eta" name="eta" required>
+        </div>
+        <button type="submit">Create</button>
+    </form>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('todotaskform');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const eta = document.getElementById('eta').value;
+
+            // Create a task object (DTO)
+            const taskInDTO = {
+                title: title,
+                description: description,
+                eta: eta
+            };
+
+            // Make a POST request to create the task
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/tasks', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    alert('Task created successfully');
+                    createTaskForm.reset();
+                } else {
+                    alert('Failed to create task');
+                }
+            };
+            xhr.send(JSON.stringify(taskInDTO));
+        });
+    });
+</script>
+</body>
+</html>
