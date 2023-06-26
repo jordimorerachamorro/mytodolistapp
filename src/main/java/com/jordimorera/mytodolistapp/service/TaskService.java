@@ -30,6 +30,10 @@ public class TaskService {
         return this.repository.save(task);
     }
 
+    public Task createTask(Task task) {
+        return this.repository.save(task);
+    }
+
     public List<Task> findAll() {
         return this.repository.findAll();
     }

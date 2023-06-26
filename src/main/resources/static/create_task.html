@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Task</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+<h1>Create Task</h1>
+<form id="create-task-form" method="post" th:action="@{/tasks}">
+    <label>Title:</label>
+    <input type="text" name="title" id="title" required/><br/>
+    <label>Description:</label>
+    <textarea name="description" id="description"></textarea><br/>
+    <label>ETA:</label>
+    <input type="datetime-local" name="eta" id="eta" required/><br/>
+    <input type="submit" value="Create"/>
+</form>
+<script src="app.js"></script>
+</body>
+</html>

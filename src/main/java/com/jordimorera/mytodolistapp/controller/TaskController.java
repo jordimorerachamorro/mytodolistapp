@@ -20,9 +20,14 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @PostMapping
+    /*@PostMapping
     public Task createTask(@RequestBody TaskInDTO taskInDTO) {
        return this.taskService.createTask(taskInDTO);
+    }*/
+
+    @PostMapping
+    public Task createTask(@ModelAttribute Task task) {
+       return this.taskService.createTask(task);
     }
 
     @GetMapping
