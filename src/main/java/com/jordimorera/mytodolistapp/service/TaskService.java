@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,15 +37,31 @@ public class TaskService {
         task.setTitle(taskInDTO.getTitle());
         task.setDescription(taskInDTO.getDescription());
         task.setEta(taskInDTO.getEta());
+        if (!task.isFinished()) {
+            // Si se mueve la fecha limite, el estado debe reflejarlo (p.ej. LATE -> ON_TIME)
+            task.setTaskStatus(TaskStatus.forEta(task.getEta(), LocalDateTime.now()));
+        }
         return this.repository.save(task);
     }
 
+    @Transactional
     public List<Task> findAll() {
+        refreshOverdueTasks();
         return this.repository.findAll();
     }
 
+    @Transactional
     public List<Task> findAllByTaskStatus(TaskStatus status) {
+        refreshOverdueTasks();
         return this.repository.findAllByTaskStatus(status);
+    }
+
+    /**
+     * El paso del tiempo convierte tareas ON_TIME en LATE. Se recalcula antes de cada lectura:
+     * una sola UPDATE, siempre consistente y sin necesidad de un job programado.
+     */
+    private void refreshOverdueTasks() {
+        this.repository.markOverdueTasksAsLate(LocalDateTime.now(), TaskStatus.LATE);
     }
 
     @Transactional

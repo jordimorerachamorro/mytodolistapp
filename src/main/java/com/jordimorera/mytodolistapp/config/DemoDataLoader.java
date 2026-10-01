@@ -39,6 +39,8 @@ public class DemoDataLoader implements CommandLineRunner {
         create("Upgrade to Spring Boot 4", "Migrate javax -> jakarta and fix deprecations", now.plusDays(3));
         create("Write API documentation", "Document every endpoint in the README", now.plusDays(7));
         create("Prepare demo for the team", "Show the Thymeleaf UI and the REST API side by side", now.plusDays(1));
+        create("Renew SSL certificate", "The staging certificate expired, renew it before the next release", now.minusHours(3));
+        create("Reply to code review comments", "Address the feedback on the persistence layer PR", now.minusDays(2));
         Task done = create("Set up CI pipeline", "Build and test on every push", now.minusDays(1));
         taskService.updateTaskAsFinished(done.getId());
         log.info("Demo data loaded: {} tasks", repository.count());

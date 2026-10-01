@@ -13,5 +13,7 @@ COPY --from=build /app/target/*.jar app.jar
 # Ajustado al plan free de Render (512 MB)
 ENV JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=75 -XX:+UseSerialGC -Xss512k"
 ENV SPRING_PROFILES_ACTIVE=prod
+# Las fechas de las tareas son horas locales (sin zona): el servidor debe ir en la misma zona que los usuarios
+ENV TZ=Europe/Madrid
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
